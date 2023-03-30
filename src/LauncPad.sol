@@ -1,34 +1,36 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.19;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract LaunchPad is ERC20 {
+contract LaunchPad {
     event Deposit(address, uint256);
     
     uint256 projectStartTime;
     uint256 projectStopTime;
 
     address projectOwner;
-    uint256 _totalSupply;
+    address tokenContractAddress;
+    uint256 totalShare;
 
     address[] tokenHolders;
     mapping(address => bool) isTokenHolder;
     mapping(address => uint256) share;
 
     constructor(
-        string memory _tokenName, 
-        string memory _tokenSymbol,
-        uint256 _tokenTotalSupply,
+        address _tokenContractAddress,
+        uint256 _totalTokenShare,
 
         uint256 _projectStartTime,
         uint256 _projectEndTime
-    ) ERC20(_tokenName, _tokenSymbol)
-    {
+    ) {
         projectOwner = msg.sender;
         projectStartTime = _projectStartTime;
         projectStopTime = _projectEndTime;
-        _totalSupply = _tokenTotalSupply;
+
+        totalShare = _totalTokenShare;
+        tokenContractAddress = _tokenContractAddress;
+        // IERC20(_tokenContractAddress).transferFrom(msg.sender, address(this), _totalTokenShare);
     }
 
     function depositNativeToken() public payable {
