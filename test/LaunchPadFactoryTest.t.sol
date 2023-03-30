@@ -65,16 +65,18 @@ contract LaunchPadFactoryTest is Test {
         claimToken(0,address(0x36));
     }
 
-    function test_5_withdrawValue() public {
+    function testFail_5_withdrawValue_notOwner() public {
         test_4_ClaimToken();
         address project = launchPadFactory.getLaunchPadProjectByID(0);
         vm.prank(address(0x00949099));
         ILaunchPad(project).withDrawValue();
     }
-
-
-
-
+    function test_5_withdrawValue() public {
+        test_4_ClaimToken();
+        address project = launchPadFactory.getLaunchPadProjectByID(0);
+        vm.prank(address(0x90));
+        ILaunchPad(project).withDrawValue();
+    }
 
 
     function depositNativeToken(uint256 id,address depositor, uint256 deposit) internal {

@@ -49,12 +49,14 @@ contract LaunchPad {
     
 
     function claimToken() public{
+        ensureIsTokenHolder();
         ensureProjectHasEnded();
         uint256 myToken = (share[msg.sender] * totalShare) / value;
         IERC20(tokenContractAddress).transfer(msg.sender,myToken);
     }
 
     function withDrawValue() public{
+        ensureIsProjectOwner();
         ensureProjectHasEnded();
         (bool success,) = payable(projectOwner).call{value: 45 }("");
         if(!success) revert("Failed");
@@ -69,5 +71,13 @@ contract LaunchPad {
 
     function ensureProjectHasEnded() internal view {
         if(block.timestamp < projectStopTime) revert("Project is still on!");
+    }
+
+    function ensureIsTokenHolder() internal view {
+        if (isTokenHolder[msg.sender] != true) revert("You are not a token holder");
+    }
+
+    function ensureIsProjectOwner() internal view {
+        if (msg.sender != projectOwner) revert("You are not authorized for this");
     }
 }
