@@ -12,6 +12,7 @@ contract LaunchPad {
     address projectOwner;
     address tokenContractAddress;
     uint256 totalShare;
+    uint256 value;
 
     address[] tokenHolders;
     mapping(address => bool) isTokenHolder;
@@ -40,15 +41,28 @@ contract LaunchPad {
             isTokenHolder[msg.sender] = true;
             tokenHolders.push(msg.sender);
         }
+        value += msg.value;
         share[msg.sender] += msg.value;
         emit Deposit(msg.sender, msg.value);
     }
 
+    function withDrawToken() public{
+        ensureProjectHasEnded();
+        IERC20(tokenContractAddress).transfer(msg.sender,(share[msg.sender]/ value) * totalShare);
+    }
+
+    function withDrawValue() public{
+        payable(projectOwner).transfer(value);
+    }
 
     function ensureProjectHasStarted() internal view{
         if(block.timestamp < projectStartTime) revert("Project has not started!");
     }
     function ensureProjectHasNotEnded() internal view{
         if(block.timestamp > projectStopTime) revert("Project has ended!");
+    }
+
+    function ensureProjectHasEnded() internal view {
+        if(block.timestamp > projectStopTime) revert("Project is still on!");
     }
 }

@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./LaunchPad.sol";
+import "./LauncPad.sol";
 
 contract LaunchPadFactory {
    address[] launchPadProjects;
@@ -13,8 +13,8 @@ contract LaunchPadFactory {
     uint256 _projectStartTime,
     uint256 _projectEndTime
 
-   ) {
-    LauncPad myLaunchPadProject = new LaunchPad(
+   ) public {
+    LaunchPad myLaunchPadProject = new LaunchPad(
         _tokenAddress,
         _totalTokenShare,
         _projectStartTime,
