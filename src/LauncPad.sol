@@ -11,7 +11,7 @@ contract LaunchPad {
 
     address projectOwner;
     address tokenContractAddress;
-    uint256 totalShare;
+    uint256 public totalShare;
     uint256 value;
 
     address[] tokenHolders;
@@ -45,6 +45,7 @@ contract LaunchPad {
         share[msg.sender] += msg.value;
         emit Deposit(msg.sender, msg.value);
     }
+    
 
     function withDrawToken() public{
         ensureProjectHasEnded();

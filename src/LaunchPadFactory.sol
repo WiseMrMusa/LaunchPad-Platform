@@ -23,6 +23,9 @@ contract LaunchPadFactory {
 
     launchPadProjects.push(address(myLaunchPadProject));
     IERC20(_tokenAddress).transferFrom(msg.sender,address(myLaunchPadProject), _totalTokenShare);
-    
+
    }
+    function getLaunchPadProjectByID(uint256 _id) public view returns (address) {
+        return launchPadProjects[_id];
+    }
 }

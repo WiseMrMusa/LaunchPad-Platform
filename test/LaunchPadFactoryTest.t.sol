@@ -4,6 +4,8 @@ pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 import "../src/LaunchPadFactory.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "../src/interfaces/ILaunchPad.sol";
+
 
 contract LaunchPadFactoryTest is Test {
     LaunchPadFactory launchPadFactory;
@@ -18,10 +20,33 @@ contract LaunchPadFactoryTest is Test {
     function test_1_createFactory() public {
         vm.startPrank(address(0x90));
         IERC20(address(tokenA)).approve(address(launchPadFactory),20 ether);
-        launchPadFactory.createLaunchPadProject(address(tokenA),10000,block.timestamp + 1000, block.timestamp + 1000);
+        launchPadFactory.createLaunchPadProject(address(tokenA),20000,block.timestamp + 10, block.timestamp + 1000);
+        vm.stopPrank();
     }
 
-    // function test_2_(){
+    function test_2_CheckTotalShare() public{
+        test_1_createFactory();
+        address hello = launchPadFactory.getLaunchPadProjectByID(0);
+        ILaunchPad(hello).totalShare();
+    }
 
-    // }
+    function test_3_DepositNativeToken() public {
+        test_1_createFactory();
+        vm.warp(100);
+        depositNativeToken(0,address(0x30),1 ether);
+        depositNativeToken(0,address(0x31),10 ether);
+        depositNativeToken(0,address(0x32),5 ether);
+        depositNativeToken(0,address(0x33),7 ether);
+        depositNativeToken(0,address(0x34),3 ether);
+        depositNativeToken(0,address(0x35),8 ether);
+        depositNativeToken(0,address(0x36),4 ether);
+    }
+
+
+    function depositNativeToken(uint256 id,address depositor, uint256 deposit) internal {
+        deal(depositor, deposit);
+        address project = launchPadFactory.getLaunchPadProjectByID(id);
+        vm.prank(depositor);
+        ILaunchPad(project).depositNativeToken{value: deposit}();
+    }
 }
