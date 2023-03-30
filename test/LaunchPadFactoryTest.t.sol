@@ -42,8 +42,20 @@ contract LaunchPadFactoryTest is Test {
         depositNativeToken(0,address(0x36),4 ether);
     }
 
+    function testFail_4_ClaimToken_timeHasNotEnded() public {
+        test_3_DepositNativeToken();
+        vm.warp(10);
+        claimToken(0,address(0x30));
+        claimToken(0,address(0x31));
+        claimToken(0,address(0x32));
+        claimToken(0,address(0x33));
+        claimToken(0,address(0x34));
+        claimToken(0,address(0x35));
+        claimToken(0,address(0x36));
+    }
     function test_4_ClaimToken() public {
         test_3_DepositNativeToken();
+        vm.warp(100000000);
         claimToken(0,address(0x30));
         claimToken(0,address(0x31));
         claimToken(0,address(0x32));

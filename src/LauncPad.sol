@@ -48,8 +48,8 @@ contract LaunchPad {
     
 
     function claimToken() public{
-        uint256 myToken = (share[msg.sender] * totalShare) / value;
         ensureProjectHasEnded();
+        uint256 myToken = (share[msg.sender] * totalShare) / value;
         IERC20(tokenContractAddress).transfer(msg.sender,myToken);
     }
 
@@ -65,6 +65,6 @@ contract LaunchPad {
     }
 
     function ensureProjectHasEnded() internal view {
-        if(block.timestamp > projectStopTime) revert("Project is still on!");
+        if(block.timestamp < projectStopTime) revert("Project is still on!");
     }
 }
