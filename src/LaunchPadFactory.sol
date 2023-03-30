@@ -18,7 +18,8 @@ contract LaunchPadFactory {
         _tokenAddress,
         _totalTokenShare,
         _projectStartTime,
-        _projectEndTime
+        _projectEndTime,
+        msg.sender
     );
 
     launchPadProjects.push(address(myLaunchPadProject));

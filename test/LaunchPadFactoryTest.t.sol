@@ -65,6 +65,12 @@ contract LaunchPadFactoryTest is Test {
         claimToken(0,address(0x36));
     }
 
+    function test_5_withdrawValue() public {
+        test_4_ClaimToken();
+        address project = launchPadFactory.getLaunchPadProjectByID(0);
+        vm.prank(address(0x00949099));
+        ILaunchPad(project).withDrawValue();
+    }
 
 
 

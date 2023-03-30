@@ -23,15 +23,16 @@ contract LaunchPad {
         uint256 _totalTokenShare,
 
         uint256 _projectStartTime,
-        uint256 _projectEndTime
+        uint256 _projectEndTime,
+
+        address _owner
     ) {
-        projectOwner = msg.sender;
+        projectOwner = _owner;
         projectStartTime = _projectStartTime;
         projectStopTime = _projectEndTime;
 
         totalShare = _totalTokenShare;
         tokenContractAddress = _tokenContractAddress;
-        // IERC20(_tokenContractAddress).transferFrom(msg.sender, address(this), _totalTokenShare);
     }
 
     function depositNativeToken() public payable {
@@ -54,7 +55,9 @@ contract LaunchPad {
     }
 
     function withDrawValue() public{
-        payable(projectOwner).transfer(value);
+        ensureProjectHasEnded();
+        (bool success,) = payable(projectOwner).call{value: 45 }("");
+        if(!success) revert("Failed");
     }
 
     function ensureProjectHasStarted() internal view{
