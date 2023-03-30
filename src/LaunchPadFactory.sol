@@ -22,7 +22,7 @@ contract LaunchPadFactory {
     );
 
     launchPadProjects.push(address(myLaunchPadProject));
-    IERC20(_tokenAddress).transfer(address(myLaunchPadProject), _totalTokenShare);
+    IERC20(_tokenAddress).transferFrom(msg.sender,address(myLaunchPadProject), _totalTokenShare);
     
    }
 }

@@ -16,7 +16,12 @@ contract LaunchPadFactoryTest is Test {
     }
 
     function test_1_createFactory() public {
-        vm.prank(address(0x90));
+        vm.startPrank(address(0x90));
+        IERC20(address(tokenA)).approve(address(launchPadFactory),20 ether);
         launchPadFactory.createLaunchPadProject(address(tokenA),10000,block.timestamp + 1000, block.timestamp + 1000);
     }
+
+    // function test_2_(){
+
+    // }
 }
