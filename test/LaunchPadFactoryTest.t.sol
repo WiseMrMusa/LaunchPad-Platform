@@ -42,11 +42,32 @@ contract LaunchPadFactoryTest is Test {
         depositNativeToken(0,address(0x36),4 ether);
     }
 
+    function test_4_ClaimToken() public {
+        test_3_DepositNativeToken();
+        claimToken(0,address(0x30));
+        claimToken(0,address(0x31));
+        claimToken(0,address(0x32));
+        claimToken(0,address(0x33));
+        claimToken(0,address(0x34));
+        claimToken(0,address(0x35));
+        claimToken(0,address(0x36));
+    }
+
+
+
+
+
+
 
     function depositNativeToken(uint256 id,address depositor, uint256 deposit) internal {
         deal(depositor, deposit);
         address project = launchPadFactory.getLaunchPadProjectByID(id);
         vm.prank(depositor);
         ILaunchPad(project).depositNativeToken{value: deposit}();
+    }
+    function claimToken(uint256 id,address depositor) internal {
+        address project = launchPadFactory.getLaunchPadProjectByID(id);
+        vm.prank(depositor);
+        ILaunchPad(project).claimToken();
     }
 }

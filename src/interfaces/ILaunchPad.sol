@@ -13,6 +13,6 @@ interface ILaunchPad {
     function isTokenHolder(address) external returns (bool);
     function share(address) external returns (uint256);
     function depositNativeToken() external payable;
-    function withDrawToken() external;
+    function claimToken() external;
     function withDrawValue() external;
 }

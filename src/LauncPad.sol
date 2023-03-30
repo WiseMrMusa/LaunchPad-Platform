@@ -47,9 +47,10 @@ contract LaunchPad {
     }
     
 
-    function withDrawToken() public{
+    function claimToken() public{
+        uint256 myToken = (share[msg.sender] * totalShare) / value;
         ensureProjectHasEnded();
-        IERC20(tokenContractAddress).transfer(msg.sender,(share[msg.sender]/ value) * totalShare);
+        IERC20(tokenContractAddress).transfer(msg.sender,myToken);
     }
 
     function withDrawValue() public{
